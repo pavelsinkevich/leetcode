@@ -54,18 +54,19 @@ class Solution(object):
         start_index = 0
         end_index = 0
         current_sum = nums[start_index]
-        while end_index < len_nums:
-            if current_sum >= target:
+        if current_sum >= target:
                 return True
-            #current_sum += nums[end_index]
+        while end_index < len_nums - 1:
             end_index += 1
-            if end_index == len_nums:
-                return False
             current_sum += nums[end_index]
             if end_index - start_index + 1 > specific_length:
                 current_sum -= nums[start_index]
                 start_index += 1
+            if current_sum >= target:
+                return True
         return False
+
+
 
     def minSubArrayLen(self, target, nums):
         total_sum = sum(nums)
@@ -87,7 +88,7 @@ class Solution(object):
         return best_len
 
 
-target = 7
-nums = [2,3,1,2,4,3]  
+target = 6
+nums = [10,2,3]
 obj = Solution()           
 print(obj.minSubArrayLen(target, nums))
