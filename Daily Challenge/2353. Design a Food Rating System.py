@@ -61,7 +61,7 @@ or if i is the first position such that x[i] != y[i], then x[i] comes before y[i
         return highestRateFood'''
 
 # faster approach: use hashmaps
-class FoodRatings(object):
+'''class FoodRatings(object):
     def __init__(self, foods, cuisines, ratings):
         """
         :type foods: List[str]
@@ -124,7 +124,38 @@ class FoodRatings(object):
         cuisine_max_rate = max(self.cuisine_rate_food[cuisine].keys())
         cuisine_max_rate_food = min(self.cuisine_rate_food[cuisine][cuisine_max_rate])
 
-        return cuisine_max_rate_food
+        return cuisine_max_rate_food'''
+
+#even faster solution: use priority queue (heapq because we don't care about thread safety)
+from collections import defaultdict
+import heapq
+# Custom default factory function to return an empty heap queue
+def empty_heap_queue():
+    return []
+
+class FoodRatings:
+
+    def __init__(self, foods, cuisines, ratings):
+        n = len(foods)
+        self.foods = foods
+        self.cuisines = cuisines
+        self.ratings = ratings
+        self.food_index = dict(zip(foods, range(n)))
+        self.cuisinesMap = defaultdict(empty_heap_queue)
+        for i, cuisine in enumerate(cuisines):
+            heapq.heappush(self.cuisinesMap[cuisine], (-self.ratings[i], self.foods[i]))
+            
+    def changeRating(self, food, newRating):
+        i = self.food_index[food]
+        self.ratings[i] = newRating; cuisine = self.cuisines[i]
+        heapq.heappush(self.cuisinesMap[cuisine], (-self.ratings[i], self.foods[i]))
+
+    def highestRated(self, cuisine):
+        rating, food = self.cuisinesMap[cuisine][0]
+        while rating != -self.ratings[self.food_index[food]]:  # check highest rating is current
+            heapq.heappop(self.cuisinesMap[cuisine])
+            rating, food = self.cuisinesMap[cuisine][0]
+        return food
 
 
 # Your FoodRatings object will be instantiated and called as such:
