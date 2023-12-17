@@ -147,14 +147,15 @@ class FoodRatings:
             
     def changeRating(self, food, newRating):
         i = self.food_index[food]
-        self.ratings[i] = newRating; cuisine = self.cuisines[i]
-        heapq.heappush(self.cuisinesMap[cuisine], (-self.ratings[i], self.foods[i]))
+        self.ratings[i] = newRating
+        cuisine = self.cuisines[i]
+        heapq.heappush(self.cuisinesMap[cuisine], (-newRating, food))
 
     def highestRated(self, cuisine):
         rating, food = self.cuisinesMap[cuisine][0]
-        while rating != -self.ratings[self.food_index[food]]:  # check highest rating is current
-            heapq.heappop(self.cuisinesMap[cuisine])
-            rating, food = self.cuisinesMap[cuisine][0]
+        while rating != -self.ratings[self.food_index[food]]:  # what if first item in the queue is outdated (rating changed since then) ?
+            heapq.heappop(self.cuisinesMap[cuisine]) # remove outdated item from queue
+            rating, food = self.cuisinesMap[cuisine][0] # take first item from the queue
         return food
 
 
