@@ -14,15 +14,9 @@ class Solution(object):
         cell_neighbors = defaultdict(list)
         for i in range(n):
             for j in range(m):
-                cell_neighbors[(i-1,j-1)].append(img[i][j])
-                cell_neighbors[(i-1,j)].append(img[i][j])
-                cell_neighbors[(i-1,j+1)].append(img[i][j])
-                cell_neighbors[(i,j-1)].append(img[i][j])
-                cell_neighbors[(i,j)].append(img[i][j])
-                cell_neighbors[(i,j+1)].append(img[i][j])
-                cell_neighbors[(i+1,j-1)].append(img[i][j])
-                cell_neighbors[(i+1,j)].append(img[i][j])
-                cell_neighbors[(i+1,j+1)].append(img[i][j])
+                for dx in range(-1, 2):
+                    for dy in range(-1, 2):
+                        cell_neighbors[(i+dx,j+dy)].append(img[i][j])
         for i in range(n):
             for j in range(m):
                 img[i][j] = sum(cell_neighbors[(i, j)]) // len(cell_neighbors[(i, j)])
