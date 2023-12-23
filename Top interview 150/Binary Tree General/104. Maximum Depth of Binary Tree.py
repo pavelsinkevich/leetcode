@@ -4,11 +4,11 @@ A binary tree's maximum depth is the number of nodes along the longest path from
 
  '''
  # Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 class Solution(object):
     def __init__(self):
         self.max_len = 0
@@ -30,3 +30,18 @@ class Solution(object):
             return 0
         self.processNode(root, 1)
         return self.max_len
+    
+root = [3,9,20,None,None,15,7]
+l = len(root)
+node_list = [None for x in root]
+for i in reversed(range(l)):
+    left = None
+    right = None
+    if i*2+2 < l:
+        left = node_list[i*2+1]
+        right = node_list[i*2+2]
+    if root[i]:
+        node_list[i] = TreeNode(root[i], left, right)
+
+obj = Solution()
+print(obj.maxDepth(node_list[0]))
