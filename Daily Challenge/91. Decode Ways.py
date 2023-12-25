@@ -92,8 +92,6 @@ class Solution(object):
         for i in range(1, 27):
             self.letter_codes.add(str(i))
         self.ways_to_substring = dict()
-
-        self.ways_qty = 0
     
     def decodePart(self, s):
         if len(s) >1:
