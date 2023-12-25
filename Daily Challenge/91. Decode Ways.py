@@ -100,8 +100,8 @@ class Solution(object):
         if len(s) >1:
             left = s[0:2]
             right = s[2:]
-            if left == "00":
-                raise Exception("string cannot be decoded")
+            #if left == "00":
+            #    raise Exception("string cannot be decoded")
             if left in self.letter_codes:
                 self.ways_to_substring[right] += self.ways_to_substring[s]
         if len(s) > 0:
