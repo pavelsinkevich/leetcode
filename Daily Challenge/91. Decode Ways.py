@@ -86,12 +86,15 @@ The test cases are generated so that the answer fits in a 32-bit integer.'''
             return 0
 
         return decodings'''
+from collections import defaultdict
+
+
 class Solution(object):
     def __init__(self):
         self.letter_codes = set()
         for i in range(1, 27):
             self.letter_codes.add(str(i))
-        self.ways_to_substring = dict()
+        self.ways_to_substring = defaultdict(int)
     
     def decodePart(self, s):
         if len(s) >1:
@@ -99,17 +102,13 @@ class Solution(object):
             right = s[2:]
             if left == "00":
                 raise Exception("string cannot be decoded")
-            if left in self.letter_codes and right in self.ways_to_substring:
+            if left in self.letter_codes:
                 self.ways_to_substring[right] += self.ways_to_substring[s]
-            if left in self.letter_codes and right not in self.ways_to_substring:
-                self.ways_to_substring[right] = self.ways_to_substring[s]
         if len(s) > 0:
             left = s[0]
             right = s[1:]
-            if left in self.letter_codes and right in self.ways_to_substring:
+            if left in self.letter_codes:
                 self.ways_to_substring[right] += self.ways_to_substring[s]
-            if left in self.letter_codes and right not in self.ways_to_substring:
-                self.ways_to_substring[right] = self.ways_to_substring[s]
 
     def numDecodings(self, s):
         """
