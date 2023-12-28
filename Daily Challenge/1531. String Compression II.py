@@ -9,9 +9,8 @@ Given a string s and an integer k. You need to delete at most k characters from 
 of s has minimum length.
 
 Find the minimum length of the run-length encoded version of s after deleting at most k characters.'''
-import heapq
 
-
+'''import heapq
 class Solution(object):
     def getLengthOfOptimalCompression(self, s, k):
         """
@@ -56,21 +55,43 @@ class Solution(object):
         while current_k > 0:
             if len(best_combinations)>0:
                 combination = heapq.heappop(best_combinations)
-                #print(combination)
-                #combination_index = combination[4]
-                #print(combination_index)
-                #if not combination_index+1 in deleted_indexes and not combination_index-1 in deleted_indexes:
-                #if combination_index in deleted_indexes:
-                    #deleted_indexes.add(combination_index)
                 current_k -=combination[1]
                 if current_k >= 0:
                     current_len -=combination[2]
             else:
                 current_k = 0
-        return current_len
-        #return [heapq.heappop(best_combinations) for i in range(len(best_combinations))]
+        return current_len'''
 
-s = "aabaabbcbbbaccc"
-k = 6
+from functools import cache
+class Solution:
+    def getLengthOfOptimalCompression(self, s: str, k: int) -> int:
+        @cache
+        def dp(i, previous_char, previous_char_qty, k):
+            # set it to inf as we will take the min later
+            if k < 0: return float('inf')
+            # we reached the end of string. Return 0
+            if i == len(s): return 0
+            # here we can have two choices, we either
+            # 1. delete the current char
+            # 2. keep the current char
+            # we calculate both result and take the min one
+            delete = dp(i + 1, previous_char, previous_char_qty, k - 1)
+            if s[i] == previous_char:
+                # e.g. a2 -> a3
+                keep = dp(i + 1, previous_char, previous_char_qty + 1, k)
+                # e.g. a9 -> a10
+                old_len = len(str(previous_char_qty)) if previous_char_qty != 1 else 0
+                new_len = len(str(previous_char_qty + 1))
+                keep += new_len - old_len
+            else:
+                # e.g. a -> b
+                keep = dp(i + 1, s[i], 1, k) + 1
+            return min(delete, keep)
+        
+        return dp(0, "", 0, k)
+
+
+s = "aaabcccd"
+k = 2
 obj = Solution()
 print(obj.getLengthOfOptimalCompression(s, k))
