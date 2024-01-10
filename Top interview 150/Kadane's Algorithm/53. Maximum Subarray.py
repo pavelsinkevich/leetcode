@@ -6,16 +6,12 @@ class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         current_sum = 0
         max_sum = -float('inf')
-        largest_item = -float('inf')
         for num in nums:
             current_sum += num
             max_sum = max(current_sum, max_sum)
-            largest_item = max(largest_item, num)
 
             if current_sum < 0:
                 current_sum = 0
-        if largest_item > max_sum:
-            max_sum = largest_item
         return max_sum
     
 obj = Solution()
